@@ -1,0 +1,174 @@
+Code :
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Gallery - CodeAlpha Task 1</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 20px;
+      color: #333;
+    }
+
+    /* Gallery Grid */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .lightbox img {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+    }
+
+    .controls {
+      margin-top: 15px;
+    }
+
+    .btn {
+      background: #fff;
+      border: none;
+      padding: 10px 15px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #ff9800;
+      color: #fff;
+    }
+
+    @media (max-width: 600px) {
+      .gallery img {
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📸 My Image Gallery</h1>
+
+  <!-- Gallery Section -->
+  <div class="gallery">
+    <!-- Nature -->
+    <img src="https://picsum.photos/id/1015/600/400" alt="Nature 1">
+    <img src="https://picsum.photos/id/1025/600/400" alt="Nature 2">
+    <img src="https://picsum.photos/id/870/600/400" alt="Festival 1">
+    <img src="https://picsum.photos/id/871/600/400" alt="Festival 2">
+    <img src="https://picsum.photos/id/1084/600/400" alt="Ganpati 1">
+
+    <!-- Pets -->
+    <img src="https://picsum.photos/id/1024/600/400" alt="Dog">
+    <img src="https://picsum.photos/id/1026/600/400" alt="Cat">
+
+    <!-- Random -->
+    <img src="https://picsum.photos/id/1062/600/400" alt="Random 1">
+    <img src="https://picsum.photos/id/1070/600/400" alt="Random 2">
+    <img src="https://picsum.photos/id/1071/600/400" alt="Random 3">
+  </div>
+
+  <!-- Lightbox Section -->
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="Preview">
+    <div class="controls">
+      <button class="btn" id="prev">⬅ Prev</button>
+      <button class="btn" id="next">Next ➡</button>
+      <button class="btn" id="close">❌ Close</button>
+    </div>
+  </div>
+
+  <script>
+    const galleryImages = document.querySelectorAll(".gallery img");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+    const prevBtn = document.getElementById("prev");
+    const nextBtn = document.getElementById("next");
+    const closeBtn = document.getElementById("close");
+
+    let currentIndex = 0;
+
+    // Open Lightbox
+    galleryImages.forEach((img, index) => {
+      img.addEventListener("click", () => {
+        currentIndex = index;
+        showImage();
+        lightbox.style.display = "flex";
+      });
+    });
+
+    // Show Image Function
+    function showImage() {
+      lightboxImg.src = galleryImages[currentIndex].src;
+    }
+
+    // Next Button
+    nextBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex + 1) % galleryImages.length;
+      showImage();
+    });
+
+    // Prev Button
+    prevBtn.addEventListener("click", () => {
+      currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+      showImage();
+    });
+
+    // Close Button
+    closeBtn.addEventListener("click", () => {
+      lightbox.style.display = "none";
+    });
+
+    // Escape Key Close
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        lightbox.style.display = "none";
+      }
+    });
+  </script>
+
+</body>
+</html>
